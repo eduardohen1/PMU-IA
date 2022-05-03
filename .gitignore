@@ -1,0 +1,7 @@
+# Packages #
+*.rar
+*.tar
+*.zip
+
+#CVS
+*.csv
