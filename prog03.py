@@ -23,13 +23,23 @@ for evento in eventos:
     inic = time.time()
     dfs = []
     for file in files:
-        print('>> ' + str(contar)  + ' - ' + str(file))        
-        for chunk in pd.read_csv(file, chunksize=1000, skiprows=1):            
-            #with open('saida.json','w') as file:
-            #    chunk.to_json(file)            
-            dataJson = chunk.to_json()
-            vlrInsert = json.loads(dataJson);            
-            dbCon.insert_one(vlrInsert)
+        #pegando apenas nome do arquivo, sem o path
+        fileName_absolute = os.path.basename(file)    
+        print('>> ' + str(contar)  + ' - ' + fileName_absolute)
+        arquivo = fileName_absolute.split('-')
+        for chunk in pd.read_csv(file, chunksize=1000, skiprows=1): 
+            #adicionando novas colunas com o nome do arquivo, datas e outros dados
+            chunk['pmu1'] = arquivo[0] + '-' + arquivo[1]
+            chunk['pmu2'] = arquivo[2]
+            chunk['dataRefPMUIni'] = arquivo[3]
+            chunk['dataRefPMUFim'] = arquivo[4][:-4]
+            chunk['nomeArquivo'] = str(fileName_absolute)
+            #orientação em table para gerar os dados tipo objeto tabular, sem este o to_json gera um objeto por coluna contendo todas as linhas
+            dataJson = chunk.to_json(orient="table") 
+            vlrPreInsert = json.loads(dataJson);            
+            vlrInsert = vlrPreInsert['data']            
+            #dbCon.insert_one(vlrInsert)
+            dbCon.insert_many(vlrInsert)
             contar += 1
             break
 fim = time.time()
