@@ -34,6 +34,9 @@ for evento in eventos:
             chunk['dataRefPMUIni'] = arquivo[3]
             chunk['dataRefPMUFim'] = arquivo[4][:-4]
             chunk['nomeArquivo'] = str(fileName_absolute)
+            chunk['DataHora'] = pd.to_datetime(chunk['Date'] + ' ' + chunk['Time (America/Sao_Paulo)'], format='%d/%m/%y %H:%M:%S.%f')            
+            #gravando campo com data e hora concatenados em string para consulta
+            chunk['DataHora2'] = chunk['DataHora'].dt.strftime('%Y%m%d_%H%M%S.%f')
             #orientação em table para gerar os dados tipo objeto tabular, sem este o to_json gera um objeto por coluna contendo todas as linhas
             dataJson = chunk.to_json(orient="table") 
             vlrPreInsert = json.loads(dataJson);            
