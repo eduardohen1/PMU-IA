@@ -1,3 +1,17 @@
+#sklearning
+#incremental pca1
+#parcial fit
+#	parciais (hrs parciais).
+#================
+#parciais
+#	transform -> converte para duas
+#		tirar média (x,y) de 10 em 10 min = 1 ponto; cor do ponto associado ao hr
+#		desvio padrão
+#matplot
+#https://scikit-learn.org/stable/computing/scaling_strategies.html
+#{  "_id": {    "$oid": "628c45abb51b6014c8c8a0d6"  },  "index": 0,  "Date": "08/04/21",  "Time (America/Sao_Paulo)": "18:57:32.150",  "Status": "02 00",  "Frequency": 60.026939,  "df/dt": 0.0031,  "VA1 V_BARRA_230k Magnitude": 240226.84375,  "VA1 V_BARRA_230k Angle": -76.970764,  "VB1 V_BARRA_230k Magnitude": 240519.265625,  "VB1 V_BARRA_230k Angle": 163.115448,  "VC1 V_BARRA_230k Magnitude": 239828.953125,  "VC1 V_BARRA_230k Angle": 42.841148,  "IA1 I_BTA_230kV Magnitude": 219.873993,  "IA1 I_BTA_230kV Angle": 99.238098,  "IB1 I_BTA_230kV Magnitude": 208.874649,  "IB1 I_BTA_230kV Angle": -23.539661,  "IC1 I_BTA_230kV Magnitude": 209.853027,  "IC1 I_BTA_230kV Angle": -140.895279,  "IA1 I_CCO_230kV Magnitude": 94.489861,  "IA1 I_CCO_230kV Angle": 86.591942,  "IB1 I_CCO_230kV Magnitude": 106.242867,  "IB1 I_CCO_230kV Angle": -34.531178,  "IC1 I_CCO_230kV Magnitude": 99.143173,  "IC1 I_CCO_230kV Angle": -156.500992,  "IA1 I_SMC_230kV Magnitude": 108.187889,  "IA1 I_SMC_230kV Angle": -96.671799,  "IB1 I_SMC_230kV Magnitude": 98.440918,  "IB1 I_SMC_230kV Angle": 138.300537,  "IC1 I_SMC_230kV Magnitude": 101.352234,  "IC1 I_SMC_230kV Angle": 27.493616,  "IA1 I_CTN_230kV Magnitude": 42.845097,  "IA1 I_CTN_230kV Angle": 72.586006,  "IB1 I_CTN_230kV Magnitude": 27.785915,  "IB1 I_CTN_230kV Angle": -33.962856,  "IC1 I_CTN_230kV Magnitude": 40.460487,  "IC1 I_CTN_230kV Angle": -142.428192,  "pmu1": "C37118-1070",  "pmu2": "PIL_230kV",  "dataRefPMUIni": "20210408185732",  "dataRefPMUFim": "20210408235859",  "nomeArquivo": "C37118-1070-PIL_230kV-20210408185732-20210408235859.zip",  "DataHora": "2021-04-08T18:57:32.150Z",  "DataHora2": "20210408_185732.150000"}
+#transformar tabela em Pivot...
+#Data/Hora | Frequencia PMU1 | 
 from cProfile import label
 import pandas as pd
 import os
