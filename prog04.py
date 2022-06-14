@@ -23,6 +23,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA, IncrementalPCA
 import seaborn as sns
+from yaml import load
 
 mngClient = pymongo.MongoClient('mongodb://localhost:27017/')
 mngDb = mngClient['local'] #mngClient.local
@@ -30,15 +31,65 @@ mngPMU = mngDb["pmu"]
 
 pmu = mngPMU.find({"pmu1" : {"$in" : ['C37118-1000', 'C37118-1001','C37118-1003']}})
 pmu = pd.DataFrame(pmu)
-pmuPivot = pd.pivot_table(pmu, index=['DataHora2'], fill_value=0)
 
-x = pmuPivot.loc[:, pmuPivot.columns.values.tolist()].values
-y = list(pmuPivot.index)
+pmuPivot = pmu.pivot_table(index="DataHora2", columns="pmu1", fill_value=0)
+pmuPivotNormalize = ((pmuPivot - pmuPivot.mean()) / pmuPivot.std()).fillna(0)
+print(pmuPivotNormalize)
 
-plt.figure(figsize=(9,9),cmap = 'viridis_r', annot=True)
-sns.heatmap(pmuPivot.data[:,pmuPivot.columns.values.tolist()].corr(), cmap='viridis_r', annot=True)
-plt.tight_layout()
+colunas = pmuPivot.columns.values
+y = pmuPivot.columns.T.codes
+
+X = pmuPivot
+n_components = pmuPivot.shape[1]
+ipca = IncrementalPCA(n_components=n_components)
+X_ipca = ipca.fit_transform(X)
+
+pca = PCA(n_components=n_components)
+X_pca = pca.fit_transform(X)
+
+colors = ["navy", "turquoise", "darkorange"]
+
+for X_transformed, title in [(X_ipca, "Incremental PCA"), (X_pca, "PCA")]:
+    plt.figure(figsize=(8, 8))
+    for color, i, target_name in zip(colors, [0, 1, 2], colunas):
+        plt.scatter(
+            X_transformed[y == i, 0],
+            X_transformed[y == i, 1],
+            color=color,
+            lw=2,
+        )
+
+    if "Incremental" in title:
+        err = np.abs(np.abs(X_pca) - np.abs(X_ipca)).mean()
+        plt.title(title + " of dataset\nMean absolute unsigned error %.6f" % err)
+    else:
+        plt.title(title + " of dataset")
+    plt.legend(loc="best", shadow=False, scatterpoints=1)
+    #plt.axis([-4, 4, -1.5, 1.5])
 plt.show()
+
+
+#pca = PCA(n_components=pmuPivot.shape[1])
+#pca.fit(pmuPivotNormalize)
+#loadings = pd.DataFrame(pca.components_.T, 
+#                        columns=['PC%s' % _ for _ in range(len(pmuPivotNormalize.columns))],
+#                        index=pmuPivot.columns)
+#
+#plt.plot(pca.explained_variance_ratio_)
+#plt.ylabel('yLabel')
+#plt.xlabel('xLabel')
+#plt.show()
+
+
+#pmuPivot = pd.pivot_table(pmu, index=['DataHora2'], fill_value=0)
+
+#x = pmuPivot.loc[:, pmuPivot.columns.values.tolist()].values
+#y = list(pmuPivot.index)
+
+#plt.figure(figsize=(9,9),cmap = 'viridis_r', annot=True)
+#sns.heatmap(pmuPivot.data[:,pmuPivot.columns.values.tolist()].corr(), cmap='viridis_r', annot=True)
+#plt.tight_layout()
+#plt.show()
 #x = pmuPivot.dropna(how='all')
 #y = pmuPivot.columns.values.tolist()#pmuPivot[pmuPivot.columns]
 #n_componets = 2
