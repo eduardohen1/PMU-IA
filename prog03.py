@@ -7,11 +7,11 @@ import pymongo
 import json
 
 #windows:
-#oneDrive = "C:/Unifei/PMU/PMU-IA/"
-#eventos = ['evento 1/*.zip']
-#linux:
-oneDrive = "/home/eduardo/Documentos/UNIFEI/PMU-IA"
+oneDrive = "C:/Unifei/PMU/PMU-IA/"
 eventos = ['evento 1/*.zip']
+#linux:
+#oneDrive = "/home/eduardo/Documentos/UNIFEI/PMU-IA"
+#eventos = ['evento 1/*.zip']
 
 mngClient = pymongo.MongoClient('mongodb://localhost:27017/')
 mngDb = mngClient['local'] #mngClient.local

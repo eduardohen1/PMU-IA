@@ -32,6 +32,8 @@ mngPMU = mngDb["pmu"]
 pmu = mngPMU.find({"pmu1" : {"$in" : ['C37118-1000', 'C37118-1001','C37118-1003']}})
 pmu = pd.DataFrame(pmu)
 
+pmu.to_csv("c:\\unifei\\pmu.csv")
+
 pmuPivot = pmu.pivot_table(index="DataHora2", columns="pmu1", fill_value=0)
 pmuPivotNormalize = ((pmuPivot - pmuPivot.mean()) / pmuPivot.std()).fillna(0)
 print(pmuPivotNormalize)
