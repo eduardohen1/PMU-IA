@@ -134,14 +134,6 @@ for index, row in pmu.iterrows():
     pmuNew = pd.DataFrame(columns=columnsNewDF)
 
 mngClient.close()       
-'''
-for index, row in pmu.iterrows():  
-    row.  
-    dados = [row['index'], row['Date'], row['Time (America/Sao_Paulo)'], row['Status'], row['Frequency'],
-             row['df/dt'], row['pmu1'], row['DataHora2']
-             ]   
-    print(dados) 
-'''
 x= 1
 
 
